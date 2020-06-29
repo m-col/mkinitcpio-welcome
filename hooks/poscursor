@@ -1,0 +1,7 @@
+#!/usr/bin/ash
+
+
+run_hook() {
+    # Reposition cursor to second line of input box for the output of fsck
+    echo -ne "\x1b[33;81H"
+}
