@@ -8,7 +8,7 @@ build() {
 
         [[ -s /etc/vconsole.conf ]] && . /etc/vconsole.conf
 
-	is_int() { [[ $1 =~ ^-?[0-9]+$ ]] }
+	is_int() { [[ $1 =~ ^-?[0-9]+$ ]]; }
 	is_int $WELCOME_FG || error "welcome: WELCOME_FG should be an integer" && exit 1
 	is_int $WELCOME_BG || error "welcome: WELCOME_BG should be an integer" && exit 1
 	is_int $WELCOME_IN || error "welcome: WELCOME_IN should be an integer" && exit 1
