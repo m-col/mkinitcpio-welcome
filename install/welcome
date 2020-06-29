@@ -1,11 +1,27 @@
 #!/bin/bash
 
 build() {
-    add_runscript
+    (
+	WELCOME_FG=5
+	WELCOME_BG=0
+	WELCOME_IN=4
+
+        [[ -s /etc/vconsole.conf ]] && . /etc/vconsole.conf
+
+	is_int() { [[ $1 =~ ^-?[0-9]+$ ]] }
+	is_int $WELCOME_FG || error "welcome: WELCOME_FG should be an integer" && exit 1
+	is_int $WELCOME_BG || error "welcome: WELCOME_BG should be an integer" && exit 1
+	is_int $WELCOME_IN || error "welcome: WELCOME_IN should be an integer" && exit 1
+
+	echo "WELCOME_FG=$WELCOME_FG" >> "$BUILDROOT/welcome"
+	echo "WELCOME_BG=$WELCOME_BG" >> "$BUILDROOT/welcome"
+	echo "WELCOME_IN=$WELCOME_IN" >> "$BUILDROOT/welcome"
+    ) &&  add_runscript
 }
 
 help() {
     cat <<HELPEOF
-Sets up console appearance before asking for passphrase
+Prints the word "Welcome" in large letters and draws a box around the input for
+the encrypt hook and output of the fsck hook.
 HELPEOF
 }

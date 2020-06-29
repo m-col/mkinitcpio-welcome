@@ -1,28 +1,21 @@
 #!/usr/bin/ash
 
 
-# # # # # # # USER SETTINGS
+draw_welcome() {
+    # user-defined colours
+    . /welcome
+    we="\x1b[48;5;${WELCOME_FG}m"
+    bk="\x1b[48;5;${WELCOME_BG}m"
+    in="\x1b[48;5;${WELCOME_IN}m"
 
-# These should be a number from 0 to 15
-
-BACKGROUND=0
-WELCOME=5
-INPUTBOX=4
-
-# # # # # # # # # # # # # #
-
-
-run_hook() {
-    bk="\x1b[48;5;${BACKGROUND}m"
-    we="\x1b[48;5;${WELCOME}m"
-    in="\x1b[48;5;${INPUTBOX}m"
-
+    # drawing tools
     p="$we  $bk"  		# single pixel
     s="$we  "	    		# start pixel row
     e="  $bk"	    		# end pixel row
     non="\x1b[0m"		# reset all settings
     fill="\033[K"   		# fill to end of line
 
+    # draw "Welcome"
     echo -e "$b14\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill"
     echo -e "                                                                                                  $s$e$fill"
     echo -e "                                                                   $p          $p                   $p$fill"
@@ -34,11 +27,27 @@ run_hook() {
     echo -e "                                                                   $p  $p  $p  $p  $p               $p          $p        $p    $p        $p    $p    $p    $p  $p$fill"
     echo -e "                                                                   $s$e      $s$e    $s      $e       $s  $e      $s    $e        $s    $e      $p    $p    $p    $s      $e$fill"
     echo -e "$fill\n$fill\n$fill\n$fill"
-    echo -e "                                                                                             $in                                                      $bk$fill"
-    echo -e "                                                                                             $in  $bk                                                  $in  $bk$fill"
-    echo -e "                                                                                             $in                                                      $bk$fill"
-    echo -e "$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill"
 
-    # move cursor to input box
-    echo -ne "\x1b[32;96H"
+    # draw input box
+    echo -e "                                                                              $in                                                                                   $bk$fill"
+    echo -e "                                                                              $in  $bk                                                                               $in  $bk$fill"
+    echo -e "                                                                              $in  $bk                                                                               $in  $bk$fill"
+    echo -e "                                                                              $in                                                                                   $bk$fill"
+
+    # fill rest of screen
+    echo -e "$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill"
+    echo -e "$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill"
+
+    # move cursor into inpux box
+    echo -ne "\x1b[32;81H"
+}
+
+
+run_hook() {
+    if [ -e /welcome ]
+    then
+	draw_welcome
+    else
+	msg "/welcome not found despite added hook."
+    fi
 }
