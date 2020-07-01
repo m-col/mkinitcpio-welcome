@@ -8,15 +8,21 @@ build() {
 
         [[ -s /etc/vconsole.conf ]] && . /etc/vconsole.conf
 
-	is_int() { [[ $1 =~ ^-?[0-9]+$ ]]; }
-	is_int $WELCOME_FG || error "welcome: WELCOME_FG should be an integer" && exit 1
-	is_int $WELCOME_BG || error "welcome: WELCOME_BG should be an integer" && exit 1
-	is_int $WELCOME_IN || error "welcome: WELCOME_IN should be an integer" && exit 1
+	is_int() { test "$1" -ge 0 -a "$1" -le 15; }
+	is_int $WELCOME_FG || exit 1
+	is_int $WELCOME_BG || exit 1
+	is_int $WELCOME_IN || exit 1
 
 	echo "WELCOME_FG=$WELCOME_FG" >> "$BUILDROOT/welcome"
 	echo "WELCOME_BG=$WELCOME_BG" >> "$BUILDROOT/welcome"
 	echo "WELCOME_IN=$WELCOME_IN" >> "$BUILDROOT/welcome"
-    ) &&  add_runscript
+
+    ) || {
+	echo "welcome: /etc/vconsole.conf configuration error"
+	exit 1
+    }
+
+    add_runscript
 }
 
 help() {
