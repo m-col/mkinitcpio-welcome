@@ -7,6 +7,7 @@ during the 'encrypt' hook and printing the output of the 'fsck' hook.
 
 Please email me with any issues, questions or comments @ mcol at posteo.net
 
+
 Usage
 -----
 
@@ -26,6 +27,12 @@ Usage
 where the number is 0-15 corresponding to the 16 defined console colours.
 
 Works very well with Evan Purkhiser's `mkinitcpio-colors`_.
+
+
+Contact
+-------
+Email me @ mcol@posteo.net for questions or contributions.
+
 
 .. _mkinitcpio: https://wiki.archlinux.org/index.php/mkinitcpio
 .. _mkinitcpio-colors: https://github.com/EvanPurkhiser/mkinitcpio-colors
