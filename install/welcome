@@ -16,8 +16,6 @@ build() {
 
     add_file "/usr/lib/initcpio/hooks/encrypt" "/welcome-decrypt" 755
 
-    add_runscript
-
     # This is pretty ugly but we want the 'build' function in the encrypt hook
     # and we want it called from a file called 'welcome' as it calls
     # 'add_runscript' which reads the filename.
