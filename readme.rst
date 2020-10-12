@@ -1,32 +1,35 @@
 mkinitcpio-welcome
 ==================
 
-Two hooks for mkinitcpio_ that draw out the word "Welcome" in big letters early
-during the boot process. A box is drawn underneath for inputting the password
-during the 'encrypt' hook and printing the output of the 'fsck' hook.
+A mkinitcpio_ hook that draws out the word "Welcome" in big letters early
+during the boot process and accepts input for disk decryption. A box is drawn
+underneath for inputting the password and printing the output of the 'fsck'
+hook.
 
-Please email me with any issues, questions or comments @ mcol at posteo.net
+The hook wraps and replaces the encrypt hook so that it can have greater
+control over the cursor and any printed messages.
+
+It works very well with Evan Purkhiser's `mkinitcpio-colors`_.
 
 
 Usage
 -----
 
-1. Copy the contents of `hooks` into `/etc/initcpio/hooks`
-#. Copy the contents of `install` into `/etc/initcpio/install`
-#. Add the `welcome` hook to `/etc/mkinitcpio.conf` before the `encrypt` hook
-#. Add the `poscursor` hook to `/etc/mkinitcpio.conf` after the `encrypt` hook
-   but before the `fsck` hook
-#. Optionally configure the colours to use in `/etc/vconsole.conf`:
+0. Ensure that you can successfully use the `encrypt` hook without first.
+1. Copy `hooks/welcome` into `/etc/initcpio/hooks`.
+2. Copy `install/welcome` into `/etc/initcpio/install`.
+3. Add the `welcome` hook to `/etc/mkinitcpio.conf` replacing the `encrypt` hook.
+4. Optionally configure the colours to use in `/etc/vconsole.conf`:
 
 .. code-block:: sh
 
    WELCOME_BG=0    # background
    WELCOME_FG=5    # foreground ("Welcome")
-   WELCOME_IN=6    # input box
+   WELCOME_IN=6    # input box frame
 
 where the number is 0-15 corresponding to the 16 defined console colours.
 
-Works very well with Evan Purkhiser's `mkinitcpio-colors`_.
+5. Rebuild the initramfs image with `mkinitcpio`.
 
 
 Contact

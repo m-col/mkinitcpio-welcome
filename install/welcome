@@ -2,32 +2,39 @@
 
 build() {
     (
-	WELCOME_FG=5
-	WELCOME_BG=0
-	WELCOME_IN=4
+        test -s /etc/vconsole.conf && . /etc/vconsole.conf
 
-        [[ -s /etc/vconsole.conf ]] && . /etc/vconsole.conf
-
-	is_int() { test "$1" -ge 0 -a "$1" -le 15; }
-	is_int $WELCOME_FG || exit 1
-	is_int $WELCOME_BG || exit 1
-	is_int $WELCOME_IN || exit 1
+	is_valid() { test "$1" -ge 0 -a "$1" -le 15; }
+	is_valid ${WELCOME_FG:-5} || WELCOME_FG=5
+	is_valid ${WELCOME_BG:-0} || WELCOME_BG=0
+	is_valid ${WELCOME_IN:-4} || WELCOME_IN=4
 
 	echo "WELCOME_FG=$WELCOME_FG" >> "$BUILDROOT/welcome"
 	echo "WELCOME_BG=$WELCOME_BG" >> "$BUILDROOT/welcome"
 	echo "WELCOME_IN=$WELCOME_IN" >> "$BUILDROOT/welcome"
+    )
 
-    ) || {
-	echo "welcome: /etc/vconsole.conf configuration error"
-	exit 1
-    }
+    add_file "/usr/lib/initcpio/hooks/encrypt" "/welcome-decrypt" 755
 
     add_runscript
+
+    # This is pretty ugly but we want the 'build' function in the encrypt hook
+    # and we want it called from a file called 'welcome' as it calls
+    # 'add_runscript' which reads the filename.
+    TMP=`mktemp -d`
+    cp /usr/lib/initcpio/install/encrypt $TMP/welcome
+    sed -i 's/build()/_&/' $TMP/welcome
+    echo _build >> $TMP/welcome
+    . $TMP/welcome
+    rm -r $TMP
 }
 
 help() {
     cat <<HELPEOF
-Prints the word "Welcome" in large letters and draws a box around the input for
-the encrypt hook and output of the fsck hook.
+This hook displays "Welcome" while waiting for input for disk decryption. It
+depends on (and uses) the build function from the standard encrypt hook to
+ensure that everything is set up correctly for decryption, but instead of using
+the encrypt hook's own boot script, a custom one is specified by the user in
+/etc/initcpio/welcome-decrypt
 HELPEOF
 }

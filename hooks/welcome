@@ -1,7 +1,7 @@
 #!/usr/bin/ash
 
 
-draw_welcome() {
+run_hook() {
     # user-defined colours
     . /welcome
     we="\x1b[48;5;${WELCOME_FG}m"
@@ -16,7 +16,7 @@ draw_welcome() {
     fill="\033[K"   		# fill to end of line
 
     # draw "Welcome"
-    echo -e "$b14\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill"
+    echo -e "\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill"
     echo -e "                                                                                                  $s$e$fill"
     echo -e "                                                                   $p          $p                   $p$fill"
     echo -e "                                                                   $p          $p                   $p$fill"
@@ -38,16 +38,11 @@ draw_welcome() {
     echo -e "$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill"
     echo -e "$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill\n$fill"
 
-    # move cursor into inpux box
+    # decrypt
     echo -ne "\x1b[32;81H"
-}
-
-
-run_hook() {
-    if [ -e /welcome ]
-    then
-	draw_welcome
-    else
-	msg "/welcome not found despite added hook."
-    fi
+    (
+	. /welcome-decrypt
+	run_hook
+    )
+    echo -ne "\x1b[33;81H"
 }
