@@ -9,6 +9,10 @@ hook.
 The hook wraps and replaces the encrypt hook so that it can have greater
 control over the cursor and any printed messages.
 
+If you find that the message is squeezed into a smaller number of columns that
+can fit on screen, you may need to enable early `kernel mode setting`_,
+although I found enabling the `consolefont` hook also fixed the issue.
+
 It works very well with Evan Purkhiser's `mkinitcpio-colors`_.
 
 
