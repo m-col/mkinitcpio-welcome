@@ -5,14 +5,13 @@ run_hook() {
     # user-defined colours
     . /welcome
     we="\x1b[48;5;${WELCOME_FG}m"
-    bk="\x1b[48;5;${WELCOME_BG}m"
     in="\x1b[48;5;${WELCOME_IN}m"
 
     # drawing tools
+    bk="\x1b[0m"		# reset settings
     p="$we  $bk"  		# single pixel
     s="$we  "	    		# start pixel row
     e="  $bk"	    		# end pixel row
-    non="\x1b[0m"		# reset all settings
     fill="\033[K"   		# fill to end of line
 
     # draw "Welcome"

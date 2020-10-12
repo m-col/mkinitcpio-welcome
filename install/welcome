@@ -6,11 +6,9 @@ build() {
 
 	is_valid() { test "$1" -ge 0 -a "$1" -le 15; }
 	is_valid ${WELCOME_FG:-5} || WELCOME_FG=5
-	is_valid ${WELCOME_BG:-0} || WELCOME_BG=0
 	is_valid ${WELCOME_IN:-4} || WELCOME_IN=4
 
 	echo "WELCOME_FG=$WELCOME_FG" >> "$BUILDROOT/welcome"
-	echo "WELCOME_BG=$WELCOME_BG" >> "$BUILDROOT/welcome"
 	echo "WELCOME_IN=$WELCOME_IN" >> "$BUILDROOT/welcome"
     )
 
